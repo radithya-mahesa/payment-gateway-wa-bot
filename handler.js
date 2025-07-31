@@ -31,7 +31,7 @@ export const messagesHandler = async (messages, sock) => {
             if (args.length < 2) {
                 await sock.sendMessage(sender, {
                     text: `❌ Format salah.
-Gunakan: !topup <nominal_id> <account_id>
+Gunakan: *!topup <nominal_id> <account_id>*
 > @topupduku.id`
                 })
                 return
@@ -100,7 +100,8 @@ Gunakan: !topup <nominal_id> <account_id>
 
         default:
             await sock.sendMessage(sender, {
-                text: `❌ Perintah tidak dikenal: ${command}\n\nKetik *!topup <nominal_id> <account_id>* untuk melakukan topup.`
+                text: `❌ Perintah tidak dikenal: ${command}\n\nKetik *!topup <nominal_id> <account_id>* untuk melakukan topup.
+> ©Topupduku.id`
             })
             break
     }

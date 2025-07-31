@@ -8,6 +8,5 @@ services:
     ports:
       - "3131:3131"
     environment:
-      - NODE_ENV=production
-    volumes:
-      - .:/app
+      - .env
+
