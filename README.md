@@ -115,7 +115,7 @@ rm -rf auth_info
 
 ## Disclaimer
 
-This project is intended for educational or internal use only. Always comply with WhatsApp's terms of service and usage policies when using Baileys or any unofficial WhatsApp API.
+This project was developed as part of a freelance work and has been approved for public release. Please use it responsibly and ensure you comply with WhatsApp’s terms of service when using Baileys or any unofficial WhatsApp API.
 
 ---
 
