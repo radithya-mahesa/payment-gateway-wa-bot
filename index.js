@@ -19,6 +19,8 @@ const {
     DisconnectReason,
 } = baileys
 
+const delay = ms => new Promise(res => setTimeout(res, ms))
+
 const startSock = async () => {
     const { state, saveCreds } = await useMultiFileAuthState(join(__dirname, 'auth_info'))
     const { version } = await fetchLatestBaileysVersion()
@@ -28,7 +30,7 @@ const startSock = async () => {
         auth: state,
         printQRInTerminal: false,
         syncFullHistory: false,
-        logger: pino({ level: 'silent' })
+        logger: pino({ level: 'silent' }),
     })
 
     sock.ev.on('creds.update', saveCreds)
@@ -50,6 +52,8 @@ const startSock = async () => {
         await messagesHandler(messages, sock)
     })
 
+    await delay(2000)
+
     if (!sock.authState.creds?.registered) {
         const phoneNumber = process.env.PHONE_NUMBER
         if (!phoneNumber) {
@@ -57,9 +61,13 @@ const startSock = async () => {
             process.exit(1)
         }
 
-        const code = await sock.requestPairingCode(phoneNumber)
-        console.log(`🔑 Pairing code: ${code}`)
-        console.log(`👉 Buka WhatsApp > Linked Devices > "Link a device" > "Link with phone number instead"\nℹ️ Atau bisa juga buka lewat pesan notifikasi yang diberikan WhatsApp`)
+        try {
+            const code = await sock.requestPairingCode(phoneNumber)
+            console.log(`🔑 Pairing code: ${code}`)
+            console.log(`👉 Buka WhatsApp > Linked Devices > "Link a device" > "Link with phone number instead"\nℹ️ Atau bisa juga buka lewat pesan notifikasi dari WhatsApp`)
+        } catch (err) {
+            console.error('❌ Gagal request pairing code:', err.message)
+        }
     }
 }
 
