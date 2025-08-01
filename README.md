@@ -43,6 +43,18 @@ PAYMENT_GATEWAY=https://your-gateway-url.com/endpoint
 
 > ⚠️ The `PHONE_NUMBER` must be in international format (without the `+` sign).
 
+### 3. Run the program
+```bash
+node index.js
+```
+You will see something like:
+
+```
+[dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+🔑 Pairing code: KWR9LBQJ
+👉 Buka WhatsApp > Linked Devices > "Link a device" > "Link with phone number instead"
+ℹ️ Atau bisa juga buka lewat pesan notifikasi dari WhatsApp
+```
 ---
 
 ## Run With Docker (Recommended)
