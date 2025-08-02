@@ -7,10 +7,17 @@ A simple WhatsApp bot using [Baileys](https://github.com/WhiskeySockets/Baileys)
 - Automatically connects to WhatsApp via pairing code.
 - Supports a custom `!topup` command.
 - Prevents usage in group chats.
+- Sends all top up products list details.
 - Sends payment QR code with transaction details.
 - Uses external API from a payment gateway.
 
 ## Command
+Show all products list
+```
+!topup
+```
+
+For the payment process 
 
 ```
 !topup <nominal_id> <account_id>
@@ -39,6 +46,7 @@ Create a `.env` file in the root project folder:
 ```env
 PHONE_NUMBER=62xxxxxxxxxx
 PAYMENT_GATEWAY=https://your-gateway-url.com/endpoint
+API_PRODUCT_LIST=https://your-api-products.com/endpoint
 ```
 
 > ⚠️ The `PHONE_NUMBER` must be in international format (without the `+` sign).
