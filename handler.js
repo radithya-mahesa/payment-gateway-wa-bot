@@ -28,11 +28,64 @@ export const messagesHandler = async (messages, sock) => {
     //tempat daftar command untuk berinteraksi
     switch (command.toLowerCase()) {
         case 'topup':
+            if (args.length === 0) {
+                try {
+                    const res = await axios.get(process.env.API_PRODUCT_LIST)
+                    const nominals = res.data?.data?.nominals
+                    const productDesc = res.data?.data?.product?.description || 'Top Up Duku Live'
+
+                    if (!Array.isArray(nominals)) {
+                        throw new Error('Data nominals tidak ditemukan')
+                    }
+
+                    let message = `📦 *Top Up Duku Live*\n`
+                    message += `📌 ${productDesc}\n\n`
+                    message += `🛒 *List Nominal Tersedia:*\n`
+
+                    for (const n of nominals) {
+                        message += `\n━━━━━━━━━━━━━━━\n`
+                        message += `🆔 ID: *${n.id}*\n`
+                        message += `💎 Paket: *${n.type}*\n`
+                        message += `📝 Deskripsi: ${n.description}\n`
+                        message += `💸 Harga: Rp${n.price.toLocaleString()}\n`
+                    }
+
+                    message += `\n━━━━━━━━━━━━━━━\n`
+                    // message += `📥 *Cara Topup:*\n`
+                    // message += `Ketik perintah berikut:\n`
+                    // message += `*!topup <nominal_id> <id_akun_duku>*\n`
+                    // message += `\n📌 *Contoh:* !topup 2 12345678\n`
+                    // message += `\n━━━━━━━━━━━━━━━\n`
+                    message += `> _@topupduku.id_`
+
+                    await sock.sendMessage(sender, { text: message })
+
+                    await sock.sendMessage(sender, { 
+                        text: `📥 *Cara Topup:*
+Ketik perintah berikut:
+*!topup <🆔nominal_id> <id_akun_duku>*
+📌 *Contoh:* !topup 2 12345678
+\n━━━━━━━━━━━━━━━
+> _@topupduku.id_`
+                    })
+                } catch (err) {
+                    console.error('❌ Error fetch produk:', err.message)
+                    await sock.sendMessage(sender, {
+                        text: `❌ Mohon maaf, list produk sedang mengalami gangguan. coba lagi nanti.
+\n━━━━━━━━━━━━━━━
+> _@topupduku.id_`
+                    })
+                }
+                return
+            }
+
+
             if (args.length < 2) {
                 await sock.sendMessage(sender, {
                     text: `❌ Format salah.
-Gunakan: *!topup <nominal_id> <account_id>*
-> @topupduku.id`
+Gunakan: *!topup* untuk melihat daftar produk
+\n━━━━━━━━━━━━━━━
+> _@topupduku.id_`
                 })
                 return
             }
@@ -40,8 +93,8 @@ Gunakan: *!topup <nominal_id> <account_id>*
             const [nominal_id, account_id] = args
             //record nomor wa customer
             const whatsapp_number = sender
-            .replace('@s.whatsapp.net', '')
-            .replace('@c.us', '') //
+                .replace('@s.whatsapp.net', '')
+                .replace('@c.us', '') //
 
             try {
                 // hit API Payment Gateway nya
@@ -93,15 +146,18 @@ Gunakan: *!topup <nominal_id> <account_id>*
                 console.error('❌ API error:', err.message)
                 await sock.sendMessage(sender, {
                     text: `❌ Maaf, gagal membuat transaksi. Pastikan ID Akun sudah benar dan coba lagi. Atau hubungi kami jika ada kendala.
-> https://topupduku.id/kontak`
+https://topupduku.id/kontak
+\n━━━━━━━━━━━━━━━
+> _@topupduku.id_`
                 })
             }
             break
 
         default:
             await sock.sendMessage(sender, {
-                text: `❌ Perintah tidak dikenal: ${command}\n\nKetik *!topup <nominal_id> <account_id>* untuk melakukan topup.
-> ©Topupduku.id`
+                text: `❌ Perintah tidak dikenal: ${command}\n\nKetik *!topup* untuk melihat daftar produk.
+\n━━━━━━━━━━━━━━━
+> _@topupduku.id_`
             })
             break
     }
