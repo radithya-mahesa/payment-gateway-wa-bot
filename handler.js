@@ -92,7 +92,7 @@ Gunakan: *!topup <nominal_id> <account_id>*
             } catch (err) {
                 console.error('❌ API error:', err.message)
                 await sock.sendMessage(sender, {
-                    text: `❌ Maaf, gagal membuat transaksi. Silakan coba lagi atau hubungi kami jika ada kendala.
+                    text: `❌ Maaf, gagal membuat transaksi. Pastikan ID Akun sudah benar dan coba lagi. Atau hubungi kami jika ada kendala.
 > https://topupduku.id/kontak`
                 })
             }
